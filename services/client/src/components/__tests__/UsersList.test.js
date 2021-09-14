@@ -18,14 +18,14 @@ const users = [
   }
 ]
 
-it("renders", () => {
-  const { asFragment } = render(<UsersList users={users} />);
-  expect(asFragment).toMatchSnapshot();
-});
-
 it("renders a username", () => {
   const { getByText } = render(<UsersList users={users} />);
   expect(getByText("michael")).toHaveClass("username");
   expect(getByText("michaelherman")).toHaveClass("username");
+});
+
+it("renders", () => {
+  const { asFragment } = render(<UsersList users={users} />);
+  expect(asFragment()).toMatchSnapshot();
 });
 
