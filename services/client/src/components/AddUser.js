@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const AddUser = (props) => {
   return (
@@ -41,6 +42,13 @@ const AddUser = (props) => {
         value="Submit" />
     </form>
   );
+}
+
+AddUser.propTypes = {
+  username: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  addUser: PropTypes.func.isRequired
 }
 
 export default AddUser;
