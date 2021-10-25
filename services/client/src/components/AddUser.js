@@ -5,9 +5,7 @@ const AddUser = (props) => {
   return (
     <form onSubmit={(event) => props.addUser(event)}>
       <div className="field">
-        <label
-          className="label is-large"
-          htmlFor="input-username">
+        <label className="label is-large" htmlFor="input-username">
           Username
         </label>
         <input
@@ -18,12 +16,11 @@ const AddUser = (props) => {
           placeholder="Enter a username"
           required
           value={props.username}
-          onChange={props.handleChange} />
+          onChange={props.handleChange}
+        />
       </div>
       <div className="field">
-        <label
-          className="label is-large"
-          htmlFor="input-email">
+        <label className="label is-large" htmlFor="input-email">
           Email
         </label>
         <input
@@ -34,21 +31,23 @@ const AddUser = (props) => {
           placeholder="Enter an email address"
           required
           value={props.email}
-          onChange={props.handleChange} />
+          onChange={props.handleChange}
+        />
       </div>
       <input
         type="submit"
         className="button is-primary is-large is-fullwidth"
-        value="Submit" />
+        value="Submit"
+      />
     </form>
   );
-}
+};
 
 AddUser.propTypes = {
   username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  addUser: PropTypes.func.isRequired
-}
+  addUser: PropTypes.func.isRequired,
+};
 
 export default AddUser;

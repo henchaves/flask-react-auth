@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 import axios from "axios";
 
-import UsersList from './components/UsersList';
+import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
 
 class App extends Component {
@@ -13,8 +13,8 @@ class App extends Component {
     this.state = {
       users: [],
       username: "",
-      email: ""
-    }
+      email: "",
+    };
 
     this.addUser = this.addUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -25,9 +25,14 @@ class App extends Component {
   }
 
   getUsers() {
-    axios.get(`${process.env.REACT_APP_API_SERVICE_URL}/users`)
-      .then(res => { this.setState({ users: res.data }); })
-      .catch(err => { console.log(err); })
+    axios
+      .get(`${process.env.REACT_APP_API_SERVICE_URL}/users`)
+      .then((res) => {
+        this.setState({ users: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   addUser(event) {
@@ -35,18 +40,21 @@ class App extends Component {
 
     const data = {
       username: this.state.username,
-      email: this.state.email
-    }
+      email: this.state.email,
+    };
 
-    axios.post(`${process.env.REACT_APP_API_SERVICE_URL}/users`, data)
+    axios
+      .post(`${process.env.REACT_APP_API_SERVICE_URL}/users`, data)
       .then((res) => {
         this.getUsers();
         this.setState({ username: "", email: "" });
       })
-      .catch((err) => { console.log(err); });
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  handleChange(event) {
+  onHandleChange(event) {
     const obj = {};
     obj[event.target.name] = event.target.value;
     this.setState(obj);
@@ -60,13 +68,16 @@ class App extends Component {
             <div className="column is-half">
               <br />
               <h1 className="title is-1">Users</h1>
-              <hr /><br />
+              <hr />
+              <br />
               <AddUser
                 username={this.state.username}
                 email={this.state.email}
                 addUser={this.addUser}
-                handleChange={this.handleChange} />
-              <br /><br />
+                handleChange={this.onHandleChange}
+              />
+              <br />
+              <br />
               <UsersList users={this.state.users} />
             </div>
           </div>
@@ -80,5 +91,5 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

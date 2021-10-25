@@ -1,5 +1,5 @@
 import React from "react";
-import {render, cleanup} from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 
 import AddUser from "../AddUser";
 
@@ -8,16 +8,24 @@ afterEach(cleanup);
 const props = {
   username: "",
   email: "",
-  handleChange: () => {return true},
-  addUser: () => {return true},
-}
+  handleChange: () => {
+    return true;
+  },
+  addUser: () => {
+    return true;
+  },
+};
 
 it("renders with default props", () => {
-  const {getByLabelText, getByText} = render(<AddUser 
-    username="" 
-    email="" 
-    handleChange={() => {return true}}
-  />);
+  const { getByLabelText, getByText } = render(
+    <AddUser
+      username=""
+      email=""
+      handleChange={() => {
+        return true;
+      }}
+    />
+  );
 
   const usernameInput = getByLabelText("Username");
   expect(usernameInput).toHaveAttribute("type", "text");
@@ -34,11 +42,15 @@ it("renders with default props", () => {
 });
 
 it("renders", () => {
-  const {asFragment} = render(<AddUser 
-    username="" 
-    email=""
-    handleChange={() => {return true}}
-  />);
+  const { asFragment } = render(
+    <AddUser
+      username=""
+      email=""
+      handleChange={() => {
+        return true;
+      }}
+    />
+  );
 
   expect(asFragment()).toMatchSnapshot();
-})
+});
