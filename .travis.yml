@@ -6,15 +6,13 @@ env:
 
 jobs:
   include:
-    - stage: build
-      name: "Build users"
+    - stage: build users
       script:
         - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
         - docker pull $IMAGE:users || true
         - docker build --cache-from $IMAGE:users --tag $IMAGE:users --file ./services/users/Dockerfile.prod --build-arg SECRET_KEY=$SECRET_KEY "./services/users"
         - docker push $IMAGE:users
-    - stage: build
-      name: "Build client"
+    - stage: build client
       script:
         - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
         - docker pull $IMAGE:client || true
