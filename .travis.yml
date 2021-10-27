@@ -28,7 +28,7 @@ jobs:
     - stage: test users
       services:
         - docker
-        - postgresql
+        # - postgresql
       before_install:
         - docker pull $IMAGE:users
         - docker run -it $IMAGE:users sh
