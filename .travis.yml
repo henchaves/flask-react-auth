@@ -2,6 +2,7 @@ dist: trusty
 
 env:
   - IMAGE: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  - REACT_APP_API_SERVICE_URL: http://localhost:5004
 
 jobs:
   include:
@@ -12,3 +13,10 @@ jobs:
         - docker pull $IMAGE:users || true
         - docker build --cache-from $IMAGE:users --tag $IMAGE:users --file ./services/users/Dockerfile.prod --build-arg SECRET_KEY=$SECRET_KEY "./services/users"
         - docker push $IMAGE:users
+    - stage: build
+      name: "Build client"
+      script:
+        - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
+        - docker pull $IMAGE:client || true
+        - docker build --cache-from $IMAGE:client --tag $IMAGE:client --file ./services/client/Dockerfile.ci "./services/client"
+        - docker push $IMAGE:client
