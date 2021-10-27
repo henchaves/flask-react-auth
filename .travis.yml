@@ -28,10 +28,10 @@ jobs:
     - stage: test users
       services:
         - docker
-        - postgresql
+        # - postgresql
       before_install:
         - docker pull $IMAGE:users
-        - docker run -it $IMAGE:users sh
+        - docker run -d $IMAGE:users
       # before_script:
       #   - psql -c "CREATE DATABASE users;" -U postgres
       #   - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
@@ -46,5 +46,5 @@ jobs:
       #   - python -m flake8 src
       #   - python -m black src --check
       #   - python -m isort src --check-only
-          - echo "Hi"
+          - docker exec echo "Hi"
 
