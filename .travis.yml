@@ -24,3 +24,27 @@ jobs:
         - docker pull $IMAGE:client || true
         - docker build --cache-from $IMAGE:client --tag $IMAGE:client --file ./services/client/Dockerfile.ci "./services/client"
         - docker push $IMAGE:client
+    
+    - stage: test users
+      services:
+        - docker
+        - postgresql
+      before_install:
+        - docker pull $IMAGE:users
+        - docker run -it $IMAGE/users sh
+      # before_script:
+      #   - psql -c "CREATE DATABASE users;" -U postgres
+      #   - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
+      #   - export POSTGRES_DB=users
+      #   - export POSTGRES_USER=runner
+      #   - export POSTGRESS_PASSWORD=runner
+      #   - export FLASK_ENV=development
+      script:
+      #   - cd /usr/src/app
+      #   - pip install -r requirements-dev.txt
+      #   - python -m pytest "src/test" -p no:warnings
+      #   - python -m flake8 src
+      #   - python -m black src --check
+      #   - python -m isort src --check-only
+          - echo "Hi"
+
