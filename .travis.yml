@@ -31,11 +31,7 @@ jobs:
         # - postgresql
       before_install:
         - docker pull $IMAGE:users
-<<<<<<< HEAD
         - docker run -d $IMAGE:users
-=======
-        - docker run -it $IMAGE:users sh
->>>>>>> 1e107a5171a0af2cdaa1b26781ce2612946de0d8
       # before_script:
       #   - psql -c "CREATE DATABASE users;" -U postgres
       #   - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
@@ -51,4 +47,5 @@ jobs:
       #   - python -m black src --check
       #   - python -m isort src --check-only
           - docker exec echo "Hi"
+          - docker exec echo 'Hi 2'
 
