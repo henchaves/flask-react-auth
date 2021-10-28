@@ -38,7 +38,7 @@ jobs:
       #   # - docker exec users export POSTGRESS_PASSWORD=runner
       #   - export FLASK_ENV=development
       script:
-        - docker run --name users -d $IMAGE:users /bin/sh -c "cd /usr/src/app"
+        - docker run --rm $IMAGE:users /bin/sh -c "cd /usr/src/app && pip install -r requirements-dev.txt && python -m pytest "src/test" -p no:warnings && python -m flake8 src && python -m black src --check && python -m isort src --check-only"
         # - docker exec users pwd
         # - docker exec users echo 'Hi, Inside script!'
         # - docker exec users cd /usr/src/app
