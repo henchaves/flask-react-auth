@@ -35,8 +35,8 @@ jobs:
         - docker run --name users -d $IMAGE:users
 
       before_script:
-        - docker exec users psql -c "CREATE DATABASE users;" -U postgres
-        - docker exec users psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
+        - psql -c "CREATE DATABASE users;" -U postgres
+        - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
         - docker exec users export POSTGRES_DB=users
         - docker exec users export POSTGRES_USER=runner
         - docker exec users export POSTGRESS_PASSWORD=runner
