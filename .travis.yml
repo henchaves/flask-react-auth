@@ -1,3 +1,4 @@
+language: generic
 env:
   IMAGE: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
 
@@ -24,13 +25,12 @@ jobs:
     #     - docker push $IMAGE:client
     
     - stage: test users
-      language: python
       services:
         - docker
         - postgresql
       before_install:
         - docker pull $IMAGE:users
-        - docker run --name users -t -d $IMAGE:users bin/bash
+        - docker run --name users -t -d $IMAGE:users /bin/sh -c '
       # before_script:
       #   # - psql -c "CREATE DATABASE users;" -U postgres
       #   # - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
@@ -41,12 +41,12 @@ jobs:
       script:
         - ls
         - pwd
-        - docker exec users pwd
-        - docker exec users echo 'Hi, Inside script!'
-        - docker exec users cd /usr/src/app
-        - docker exec users pip install -r requirements-dev.txt
-        - docker exec users python -m pytest "src/test" -p no:warnings
-        - docker exec users python -m flake8 src
-        - docker exec users python -m black src --check
-        - docker exec users python -m isort src --check-only
+        # - docker exec users pwd
+        # - docker exec users echo 'Hi, Inside script!'
+        # - docker exec users cd /usr/src/app
+        # - docker exec users pip install -r requirements-dev.txt
+        # - docker exec users python -m pytest "src/test" -p no:warnings
+        # - docker exec users python -m flake8 src
+        # - docker exec users python -m black src --check
+        # - docker exec users python -m isort src --check-only
 
