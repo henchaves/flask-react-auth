@@ -30,7 +30,6 @@ jobs:
         - postgresql
       before_install:
         - docker pull $IMAGE:users
-        - docker run --name users -t -d $IMAGE:users /bin/sh -c '
       # before_script:
       #   # - psql -c "CREATE DATABASE users;" -U postgres
       #   # - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
@@ -39,6 +38,7 @@ jobs:
       #   # - docker exec users export POSTGRESS_PASSWORD=runner
       #   - export FLASK_ENV=development
       script:
+        - docker run --name users -it -d $IMAGE:users /bin/sh
         - ls
         - pwd
         # - docker exec users pwd
