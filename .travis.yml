@@ -24,6 +24,7 @@ jobs:
     #     - docker push $IMAGE:client
     
     - stage: test users
+      language: python
       services:
         - docker
         - postgresql
