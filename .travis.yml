@@ -5,25 +5,25 @@ env:
 
 jobs:
   include:
-    - stage: build users
-      services:
-        - docker
-      script:
-        - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
-        - docker pull $IMAGE:users || true
-        - docker build --cache-from $IMAGE:users --tag $IMAGE:users --file ./services/users/Dockerfile.prod --build-arg SECRET_KEY=$SECRET_KEY "./services/users"
-        - docker push $IMAGE:users
+    # - stage: build users
+    #   services:
+    #     - docker
+    #   script:
+    #     - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
+    #     - docker pull $IMAGE:users || true
+    #     - docker build --cache-from $IMAGE:users --tag $IMAGE:users --file ./services/users/Dockerfile.prod --build-arg SECRET_KEY=$SECRET_KEY "./services/users"
+    #     - docker push $IMAGE:users
 
-    - stage: build client
-      services:
-        - docker
-      before_script:
-        - export REACT_APP_API_SERVICE_URL=http://localhost:5004
-      script:
-        - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
-        - docker pull $IMAGE:client || true
-        - docker build --cache-from $IMAGE:client --tag $IMAGE:client --file ./services/client/Dockerfile.ci "./services/client"
-        - docker push $IMAGE:client
+    # - stage: build client
+    #   services:
+    #     - docker
+    #   before_script:
+    #     - export REACT_APP_API_SERVICE_URL=http://localhost:5004
+    #   script:
+    #     - echo "$CI_REGISTRY_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin
+    #     - docker pull $IMAGE:client || true
+    #     - docker build --cache-from $IMAGE:client --tag $IMAGE:client --file ./services/client/Dockerfile.ci "./services/client"
+    #     - docker push $IMAGE:client
     
     - stage: test users
       services:
@@ -31,17 +31,16 @@ jobs:
         - postgresql
       before_install:
         - docker pull $IMAGE:users
-      install:
         - docker run --name users -d $IMAGE:users
-
       before_script:
-        - psql -c "CREATE DATABASE users;" -U postgres
-        - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
-        - docker exec users export POSTGRES_DB=users
-        - docker exec users export POSTGRES_USER=runner
-        - docker exec users export POSTGRESS_PASSWORD=runner
-        - docker exec users export FLASK_ENV=development
+        # - psql -c "CREATE DATABASE users;" -U postgres
+        # - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
+        # - docker exec users export POSTGRES_DB=users
+        # - docker exec users export POSTGRES_USER=runner
+        # - docker exec users export POSTGRESS_PASSWORD=runner
+        - export FLASK_ENV=development
       script:
+        - docker exec users echo 'Hi, Inside script!'
         - docker exec users cd /usr/src/app
         - docker exec users pip install -r requirements-dev.txt
         - docker exec users python -m pytest "src/test" -p no:warnings
