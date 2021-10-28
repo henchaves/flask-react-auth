@@ -31,15 +31,18 @@ jobs:
         - postgresql
       before_install:
         - docker pull $IMAGE:users
-        - docker run --name users -d $IMAGE:users
-      before_script:
-        # - psql -c "CREATE DATABASE users;" -U postgres
-        # - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
-        # - docker exec users export POSTGRES_DB=users
-        # - docker exec users export POSTGRES_USER=runner
-        # - docker exec users export POSTGRESS_PASSWORD=runner
-        - export FLASK_ENV=development
+        - docker run --name users -t -d $IMAGE:users bin/bash
+      # before_script:
+      #   # - psql -c "CREATE DATABASE users;" -U postgres
+      #   # - psql -c "CREATE USER runner WITH PASSWORD 'runner';" -U postgres
+      #   # - docker exec users export POSTGRES_DB=users
+      #   # - docker exec users export POSTGRES_USER=runner
+      #   # - docker exec users export POSTGRESS_PASSWORD=runner
+      #   - export FLASK_ENV=development
       script:
+        - ls
+        - pwd
+        - docker exec users pwd
         - docker exec users echo 'Hi, Inside script!'
         - docker exec users cd /usr/src/app
         - docker exec users pip install -r requirements-dev.txt
