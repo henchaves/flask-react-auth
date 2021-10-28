@@ -38,7 +38,7 @@ jobs:
       #   # - docker exec users export POSTGRESS_PASSWORD=runner
       #   - export FLASK_ENV=development
       script:
-        - docker run --name users -it -d $IMAGE:users /bin/sh
+        - docker run --name users -it $IMAGE:users /bin/sh
         - ls
         - pwd
         # - docker exec users pwd
