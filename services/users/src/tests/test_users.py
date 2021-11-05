@@ -9,7 +9,13 @@ def test_add_user(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io", "password": "greaterthaneight"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "greaterthaneight",
+            }
+        ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -42,13 +48,25 @@ def test_add_user_duplicate_email(test_app, test_database):
     client = test_app.test_client()
     client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io", "password": "greaterthaneight"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "greaterthaneight",
+            }
+        ),
         content_type="application/json",
     )
 
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io", "password": "greaterthaneight"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "greaterthaneight",
+            }
+        ),
         content_type="application/json",
     )
 
@@ -123,7 +141,13 @@ def test_update_user(test_app, test_database, add_user):
     client = test_app.test_client()
     resp_one = client.put(
         f"/users/{user.id}",
-        data=json.dumps({"username": "me", "email": "me@testdriven.io", "password": "greaterthaneight"}),
+        data=json.dumps(
+            {
+                "username": "me",
+                "email": "me@testdriven.io",
+                "password": "greaterthaneight",
+            }
+        ),
         content_type="application/json",
     )
     data = json.loads(resp_one.data.decode())
