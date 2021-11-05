@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy.sql import func
 
-from src import db, bcrypt
+from src import bcrypt, db
 
 
 class User(db.Model):
