@@ -2,6 +2,8 @@ import json
 
 import pytest
 
+from src import bcrypt
+from src.api.users.crud import get_user_by_id
 from src.api.users.models import User
 
 
@@ -202,3 +204,25 @@ def test_update_user_duplicate_email(test_app, test_database, add_user):
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert "Sorry. That email already exists." in data["message"]
+
+
+def test_update_user_with_passord(test_app, test_database, add_user):
+    password_one = "greaterthaneight"
+    password_two = "somethingdifferent"
+
+    user = add_user("user-to-be-updated", "update-me@testdriven.io", password_one)
+    assert bcrypt.check_password_hash(user.password, password_one)
+
+    client = test_app.test_client()
+    resp = client.put(
+        f"/users/{user.id}",
+        data=json.dumps(
+            {"username": "me", "email": "foo@testdriven.io", "password": password_two}
+        ),
+        content_type="application/json",
+    )
+    assert resp.status_code == 200
+
+    user = get_user_by_id(user.id)
+    assert bcrypt.check_password_hash(user.password, password_one)
+    assert not bcrypt.check_password_hash(user.password, password_two)
