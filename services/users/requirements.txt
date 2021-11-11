@@ -6,3 +6,4 @@ psycopg2-binary==2.8.6
 Flask-Admin==1.5.8
 flask-cors==3.0.10
 flask-bcrypt==0.7.1
+pyjwt==2.1.0
