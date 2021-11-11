@@ -19,6 +19,7 @@ def test_decode_token(test_app, test_database, add_user):
     assert isinstance(token, str)
     assert User.decode_token(token) == user.id
 
+
 def test_encode_token_refresh(test_app, test_database, add_user):
     user = add_user("justatest", "test@test.com", "test")
     token = user.encode_token(user.id, "refresh")
