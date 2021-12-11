@@ -1,6 +1,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 
+from src import bcrypt
 from src.api.users.crud import add_user, get_user_by_email
 
 auth_namespace = Namespace("auth")
@@ -12,6 +13,22 @@ user = auth_namespace.model(
 
 full_user = auth_namespace.clone(
     "Full User", user, {"password": fields.String(required=True)}
+)
+
+login = auth_namespace.model(
+    "Login User",
+    {
+        "email": fields.String(required=True),
+        "password": fields.String(required=True),
+    },
+)
+
+refresh = auth_namespace.model(
+    "Refresh", {"refresh_token": fields.String(required=True)}
+)
+
+tokens = auth_namespace.clone(
+    "Access and Refresh tokens", refresh, {"access_token": fields.String(required=True)}
 )
 
 
@@ -34,8 +51,25 @@ class Register(Resource):
 
 
 class Login(Resource):
+    @auth_namespace.marshal_with(tokens)
+    @auth_namespace.expect(login, validate=True)
+    @auth_namespace.response(200, "Success")
+    @auth_namespace.response(404, "User does not exist.")
     def post(self):
-        pass
+        post_data = request.get_json()
+        email = post_data.get("email")
+        password = post_data.get("password")
+        response_object = {}
+
+        user = get_user_by_email(email)
+        if not user or not bcrypt.check_password_hash(user.password, password):
+            auth_namespace.abort(404, "User does not exist.")
+
+        access_token = user.encode_token(user.id, "access")
+        refresh_token = user.encode_token(user.id, "refresh")
+
+        response_object = {"access_token": access_token, "refresh_token": refresh_token}
+        return response_object, 200
 
 
 class Refresh(Resource):
