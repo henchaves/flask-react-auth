@@ -33,6 +33,9 @@ tokens = auth_namespace.clone(
     "Access and Refresh tokens", refresh, {"access_token": fields.String(required=True)}
 )
 
+parser = auth_namespace.parser()
+parser.add_argument("Authorization", location="headers")
+
 
 class Register(Resource):
     @auth_namespace.marshal_with(user)
@@ -110,6 +113,7 @@ class Status(Resource):
     @auth_namespace.marshal_with(user)
     @auth_namespace.response(200, "Success")
     @auth_namespace.response(401, "Invalid token")
+    @auth_namespace.expect(parser)
     def get(self):
         auth_header = request.headers.get("Authorization")
         if auth_header:
