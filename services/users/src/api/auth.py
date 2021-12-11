@@ -1,5 +1,4 @@
 import jwt
-
 from flask import request
 from flask_restx import Namespace, Resource, fields
 
@@ -91,13 +90,13 @@ class Refresh(Resource):
 
             if not user:
                 auth_namespace.abort(401, "Invalid token")
-            
+
             access_token = user.encode_token(user.id, "access")
             refresh_token = user.encode_token(user.id, "refresh")
 
             response_object = {
                 "access_token": access_token,
-                "refresh_token": refresh_token
+                "refresh_token": refresh_token,
             }
             return response_object, 200
         except jwt.ExpiredSignatureError:
@@ -108,8 +107,26 @@ class Refresh(Resource):
 
 
 class Status(Resource):
+    @auth_namespace.marshal_with(user)
+    @auth_namespace.response(200, "Success")
+    @auth_namespace.response(401, "Invalid token")
     def get(self):
-        pass
+        auth_header = request.headers.get("Authorization")
+        if auth_header:
+            try:
+                access_token = auth_header.split(" ")[1]
+                resp = User.decode_token(access_token)
+                user = get_user_by_id(resp)
+                if not user:
+                    auth_namespace.abort(401, "Invalid token")
+                return user, 200
+            except jwt.ExpiredSignatureError:
+                auth_namespace.abort(401, "Signature expired. Please log in again.")
+                return "Signature expired. Please log in again."
+            except jwt.InvalidTokenError:
+                auth_namespace.abort(401, "Invalid token. Please log in again.")
+        else:
+            auth_namespace.abort(403, "Token required")
 
 
 auth_namespace.add_resource(Register, "/register")
