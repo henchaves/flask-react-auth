@@ -1,8 +1,11 @@
+import jwt
+
 from flask import request
 from flask_restx import Namespace, Resource, fields
 
 from src import bcrypt
-from src.api.users.crud import add_user, get_user_by_email
+from src.api.users.crud import add_user, get_user_by_email, get_user_by_id
+from src.api.users.models import User
 
 auth_namespace = Namespace("auth")
 
@@ -54,7 +57,7 @@ class Login(Resource):
     @auth_namespace.marshal_with(tokens)
     @auth_namespace.expect(login, validate=True)
     @auth_namespace.response(200, "Success")
-    @auth_namespace.response(404, "User does not exist.")
+    @auth_namespace.response(404, "User does not exist")
     def post(self):
         post_data = request.get_json()
         email = post_data.get("email")
@@ -73,8 +76,35 @@ class Login(Resource):
 
 
 class Refresh(Resource):
+    @auth_namespace.marshal_with(tokens)
+    @auth_namespace.expect(refresh, validate=True)
+    @auth_namespace.response(200, "Success")
+    @auth_namespace.response(401, "Invalid token")
     def post(self):
-        pass
+        post_data = request.get_json()
+        refresh_token = post_data.get("refresh_token")
+        response_object = {}
+
+        try:
+            resp = User.decode_token(refresh_token)
+            user = get_user_by_id(resp)
+
+            if not user:
+                auth_namespace.abort(401, "Invalid token")
+            
+            access_token = user.encode_token(user.id, "access")
+            refresh_token = user.encode_token(user.id, "refresh")
+
+            response_object = {
+                "access_token": access_token,
+                "refresh_token": refresh_token
+            }
+            return response_object, 200
+        except jwt.ExpiredSignatureError:
+            auth_namespace.abort(401, "Signature expired. Please log in again.")
+            return "Signature expired. Please log in again."
+        except jwt.InvalidTokenError:
+            auth_namespace.abort(401, "Invalid token. Please log in again.")
 
 
 class Status(Resource):
