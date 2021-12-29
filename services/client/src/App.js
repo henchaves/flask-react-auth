@@ -1,88 +1,66 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
 
-class App extends Component {
-  constructor() {
-    super();
+import axios from "axios";
 
-    this.state = {
-      users: [],
-      username: "",
-      email: "",
-    };
+const App = () => {
 
-    this.addUser = this.addUser.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+  const [users, setUsers] = useState([]);
+
+  useEffect(async () => {
+    updateUsersList();
+  }, [])
+
+  async function getUsers() {
+    try {
+      const usersReponse = await fetch(`${process.env.REACT_APP_API_SERVICE_URL}/users`);
+      const usersData = await usersReponse.json();
+      return usersData;
+    } catch (err) {
+      console.err(err);
+    }
   }
 
-  componentDidMount() {
-    this.getUsers();
+  async function updateUsersList() {
+    const usersList = await getUsers();
+    setUsers(usersList);
   }
 
-  getUsers() {
-    axios
-      .get(`${process.env.REACT_APP_API_SERVICE_URL}/users`)
-      .then((res) => {
-        this.setState({ users: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  addUser(event) {
-    event.preventDefault();
-
-    const data = {
-      username: this.state.username,
-      email: this.state.email,
-    };
+  function addUser(e, data) {
+    e.preventDefault();
 
     axios
       .post(`${process.env.REACT_APP_API_SERVICE_URL}/users`, data)
       .then((res) => {
-        this.getUsers();
-        this.setState({ username: "", email: "" });
+        updateUsersList();
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  onHandleChange(event) {
-    const obj = {};
-    obj[event.target.name] = event.target.value;
-    this.setState(obj);
-  }
-
-  render() {
-    return (
-      <section className="section">
-        <div className="container">
-          <div className="columns">
-            <div className="column is-half">
-              <br />
-              <h1 className="title is-1">Users</h1>
-              <hr />
-              <br />
-              <AddUser
-                username={this.state.username}
-                email={this.state.email}
-                addUser={this.addUser}
-                handleChange={this.onHandleChange}
-              />
-              <br />
-              <br />
-              <UsersList users={this.state.users} />
-            </div>
+  return (
+    <section className="section">
+      <div className="container">
+        <div className="columns">
+          <div className="column is-half">
+            <br />
+            <h1 className="title is-1">Users</h1>
+            <hr />
+            <br />
+            <AddUser addUser={addUser} />
+            <br />
+            <br />
+            <UsersList users={users} />
+            <br />
+            <br />
           </div>
         </div>
-      </section>
-    );
-  }
+      </div>
+    </section>
+  );
 }
 
 export default App;

@@ -44,9 +44,7 @@ it("renders with default props", () => {
 it("renders", () => {
   const { asFragment } = render(
     <AddUser
-      username=""
-      email=""
-      handleChange={() => {
+      addUser={() => {
         return true;
       }}
     />

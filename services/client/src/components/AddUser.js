@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const AddUser = (props) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+
   return (
-    <form onSubmit={(event) => props.addUser(event)}>
+    <form onSubmit={(event) => props.addUser(event, { username, email, password })}>
       <div className="field">
         <label className="label is-large" htmlFor="input-username">
           Username
@@ -15,8 +20,7 @@ const AddUser = (props) => {
           type="text"
           placeholder="Enter a username"
           required
-          value={props.username}
-          onChange={props.handleChange}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
       <div className="field">
@@ -30,8 +34,21 @@ const AddUser = (props) => {
           type="email"
           placeholder="Enter an email address"
           required
-          value={props.email}
-          onChange={props.handleChange}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="field">
+        <label className="label is-large" htmlFor="input-password">
+          Password
+        </label>
+        <input
+          name="password"
+          id="input-password"
+          className="input is-large"
+          type="password"
+          placeholder="Enter an password"
+          required
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <input
@@ -44,9 +61,6 @@ const AddUser = (props) => {
 };
 
 AddUser.propTypes = {
-  username: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
   addUser: PropTypes.func.isRequired,
 };
 
