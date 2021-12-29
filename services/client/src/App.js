@@ -6,16 +6,17 @@ import AddUser from "./components/AddUser";
 import axios from "axios";
 
 const App = () => {
-
   const [users, setUsers] = useState([]);
 
   useEffect(async () => {
     updateUsersList();
-  }, [])
+  }, []);
 
   async function getUsers() {
     try {
-      const usersReponse = await fetch(`${process.env.REACT_APP_API_SERVICE_URL}/users`);
+      const usersReponse = await fetch(
+        `${process.env.REACT_APP_API_SERVICE_URL}/users`
+      );
       const usersData = await usersReponse.json();
       return usersData;
     } catch (err) {
@@ -61,6 +62,6 @@ const App = () => {
       </div>
     </section>
   );
-}
+};
 
 export default App;

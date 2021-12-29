@@ -6,9 +6,10 @@ const AddUser = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   return (
-    <form onSubmit={(event) => props.addUser(event, { username, email, password })}>
+    <form
+      onSubmit={(event) => props.addUser(event, { username, email, password })}
+    >
       <div className="field">
         <label className="label is-large" htmlFor="input-username">
           Username
