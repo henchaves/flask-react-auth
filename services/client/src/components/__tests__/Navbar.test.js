@@ -5,7 +5,7 @@ import Navbar from "../Navbar";
 
 afterEach(cleanup);
 
-const title = "Hello, World!"
+const title = "Hello, World!";
 
 it("renders a title", () => {
   const { getByText } = renderWithRouter(<Navbar title={title} />);
@@ -15,4 +15,4 @@ it("renders a title", () => {
 it("renders", () => {
   const { asFragment } = renderWithRouter(<Navbar title={title} />);
   expect(asFragment()).toMatchSnapshot();
-})
+});
