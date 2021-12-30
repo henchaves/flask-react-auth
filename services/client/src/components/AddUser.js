@@ -16,9 +16,7 @@ const AddUser = (props) => {
     setPassword("");
   }
   return (
-    <form
-      onSubmit={onSubmit}
-    >
+    <form onSubmit={onSubmit}>
       <div className="field">
         <label className="label is-large" htmlFor="input-username">
           Username

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
+import About from "./components/About";
+import { Switch, Route } from "react-router-dom";
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -33,12 +35,12 @@ const App = () => {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       updateUsersList();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
@@ -48,15 +50,23 @@ const App = () => {
         <div className="columns">
           <div className="column is-half">
             <br />
-            <h1 className="title is-1">Users</h1>
-            <hr />
-            <br />
-            <AddUser addUser={addUser} />
-            <br />
-            <br />
-            <UsersList users={users} />
-            <br />
-            <br />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <div>
+                    <h1 className="title is-1">Users</h1>
+                    <hr />
+                    <br />
+                    <AddUser addUser={addUser} />
+                    <br /> <br />
+                    <UsersList users={users} />
+                  </div>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+            </Switch>
           </div>
         </div>
       </div>
