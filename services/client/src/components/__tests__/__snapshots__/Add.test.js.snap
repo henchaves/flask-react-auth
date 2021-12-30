@@ -39,6 +39,7 @@ exports[`renders 1`] = `
                 placeholder="Enter a username"
                 required=""
                 type="text"
+                value=""
               />
             </div>
             <div
@@ -57,6 +58,7 @@ exports[`renders 1`] = `
                 placeholder="Enter an email address"
                 required=""
                 type="email"
+                value=""
               />
             </div>
             <div
@@ -75,6 +77,7 @@ exports[`renders 1`] = `
                 placeholder="Enter an password"
                 required=""
                 type="password"
+                value=""
               />
             </div>
             <input
