@@ -6,9 +6,18 @@ const AddUser = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  function onSubmit(event) {
+    event.preventDefault();
+
+    props.addUser({ username, email, password });
+
+    setUsername("");
+    setEmail("");
+    setPassword("");
+  }
   return (
     <form
-      onSubmit={(event) => props.addUser(event, { username, email, password })}
+      onSubmit={onSubmit}
     >
       <div className="field">
         <label className="label is-large" htmlFor="input-username">
@@ -20,6 +29,7 @@ const AddUser = (props) => {
           className="input is-large"
           type="text"
           placeholder="Enter a username"
+          value={username}
           required
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -34,6 +44,7 @@ const AddUser = (props) => {
           className="input is-large"
           type="email"
           placeholder="Enter an email address"
+          value={email}
           required
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -48,6 +59,7 @@ const AddUser = (props) => {
           className="input is-large"
           type="password"
           placeholder="Enter an password"
+          value={password}
           required
           onChange={(e) => setPassword(e.target.value)}
         />

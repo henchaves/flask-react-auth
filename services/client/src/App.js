@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
 
-import axios from "axios";
-
 const App = () => {
   const [users, setUsers] = useState([]);
 
@@ -20,7 +18,7 @@ const App = () => {
       const usersData = await usersReponse.json();
       return usersData;
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   }
 
@@ -29,17 +27,19 @@ const App = () => {
     setUsers(usersList);
   }
 
-  function addUser(e, data) {
-    e.preventDefault();
-
-    axios
-      .post(`${process.env.REACT_APP_API_SERVICE_URL}/users`, data)
-      .then((res) => {
-        updateUsersList();
-      })
-      .catch((err) => {
-        console.log(err);
+  async function addUser(data) {
+    try {
+      await fetch(`${process.env.REACT_APP_API_SERVICE_URL}/users`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
       });
+      updateUsersList();
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
