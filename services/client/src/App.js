@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 
 import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
 import About from "./components/About";
-import { Switch, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 const App = () => {
+  const title = "TestDriven.io";
   const [users, setUsers] = useState([]);
 
   useEffect(async () => {
@@ -45,33 +47,36 @@ const App = () => {
   }
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-half">
-            <br />
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => (
-                  <div>
-                    <h1 className="title is-1">Users</h1>
-                    <hr />
-                    <br />
-                    <AddUser addUser={addUser} />
-                    <br /> <br />
-                    <UsersList users={users} />
-                  </div>
-                )}
-              />
-              <Route exact path="/about" component={About} />
-            </Switch>
+    <div>
+      <Navbar title={title} />
+      <section className="section">
+        <div className="container">
+          <div className="columns">
+            <div className="column is-half">
+              <br />
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => (
+                    <div>
+                      <h1 className="title is-1">Users</h1>
+                      <hr />
+                      <br />
+                      <AddUser addUser={addUser} />
+                      <br /> <br />
+                      <UsersList users={users} />
+                    </div>
+                  )}
+                />
+                <Route exact path="/about" component={About} />
+              </Switch>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
-};
+}
 
 export default App;
