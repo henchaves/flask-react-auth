@@ -5,6 +5,8 @@ import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
 const App = () => {
   const title = "TestDriven.io";
@@ -70,6 +72,8 @@ const App = () => {
                   )}
                 />
                 <Route exact path="/about" component={About} />
+                <Route exact path="/register" component={RegisterForm} />
+                <Route exact path="/login" component={LoginForm} />
               </Switch>
             </div>
           </div>
