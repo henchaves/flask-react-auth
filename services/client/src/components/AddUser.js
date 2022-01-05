@@ -18,12 +18,19 @@ const AddUser = (props) => (
       setSubmitting(false);
     }}
     validationSchema={Yup.object().shape({
-      username: Yup.string().required("Username is required."),
-      email: Yup.string().email("Enter a valid email.").required("Email is required."),
-      password: Yup.string().required("Password is required."),
+      username: Yup.string()
+        .required("Username is required.")
+        .min(6, "Username must be greater than 5 characters."),
+      email: Yup.string()
+        .email("Enter a valid email.")
+        .required("Email is required.")
+        .min(6, "Email must be greater than 5 characters."),
+      password: Yup.string()
+        .required("Password is required.")
+        .min(11, "Password must be greater than 10 characters."),
     })}
   >
-    {props => {
+    {(props) => {
       const {
         values,
         touched,
@@ -43,7 +50,9 @@ const AddUser = (props) => (
             <input
               name="username"
               id="input-username"
-              className={errors.username && touched.username ? "input error" : "input"}
+              className={
+                errors.username && touched.username ? "input error" : "input"
+              }
               type="text"
               placeholder="Enter a username"
               value={values.username}
@@ -61,7 +70,9 @@ const AddUser = (props) => (
             <input
               name="email"
               id="input-email"
-              className={errors.username && touched.username ? "input error" : "input"}
+              className={
+                errors.username && touched.username ? "input error" : "input"
+              }
               type="email"
               placeholder="Enter an email address"
               value={values.email}
@@ -79,7 +90,9 @@ const AddUser = (props) => (
             <input
               name="password"
               id="input-password"
-              className={errors.username && touched.username ? "input error" : "input"}
+              className={
+                errors.username && touched.username ? "input error" : "input"
+              }
               type="password"
               placeholder="Enter an password"
               value={values.password}
