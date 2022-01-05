@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
+import "./form.css";
 
 const AddUser = (props) => (
   <Formik
@@ -41,7 +43,7 @@ const AddUser = (props) => (
             <input
               name="username"
               id="input-username"
-              className="input"
+              className={errors.username && touched.username ? "input error" : "input"}
               type="text"
               placeholder="Enter a username"
               value={values.username}
@@ -59,7 +61,7 @@ const AddUser = (props) => (
             <input
               name="email"
               id="input-email"
-              className="input"
+              className={errors.username && touched.username ? "input error" : "input"}
               type="email"
               placeholder="Enter an email address"
               value={values.email}
@@ -77,7 +79,7 @@ const AddUser = (props) => (
             <input
               name="password"
               id="input-password"
-              className="input"
+              className={errors.username && touched.username ? "input error" : "input"}
               type="password"
               placeholder="Enter an password"
               value={values.password}
