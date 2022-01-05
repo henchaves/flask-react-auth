@@ -1,75 +1,104 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
-const AddUser = (props) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AddUser = (props) => (
+  <Formik
+    initialValues={{
+      username: "",
+      email: "",
+      password: "",
+    }}
+    onSubmit={(values, { setSubmitting, resetForm }) => {
+      props.addUser(values);
+      resetForm();
+      setSubmitting(false);
+    }}
+    validationSchema={Yup.object().shape({
+      username: Yup.string().required("Username is required."),
+      email: Yup.string().email("Enter a valid email.").required("Email is required."),
+      password: Yup.string().required("Password is required."),
+    })}
+  >
+    {props => {
+      const {
+        values,
+        touched,
+        errors,
+        isSubmetting,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+      } = props;
 
-  function onSubmit(event) {
-    event.preventDefault();
-
-    props.addUser({ username, email, password });
-
-    setUsername("");
-    setEmail("");
-    setPassword("");
-  }
-  return (
-    <form onSubmit={onSubmit}>
-      <div className="field">
-        <label className="label is-large" htmlFor="input-username">
-          Username
-        </label>
-        <input
-          name="username"
-          id="input-username"
-          className="input is-large"
-          type="text"
-          placeholder="Enter a username"
-          value={username}
-          required
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className="field">
-        <label className="label is-large" htmlFor="input-email">
-          Email
-        </label>
-        <input
-          name="email"
-          id="input-email"
-          className="input is-large"
-          type="email"
-          placeholder="Enter an email address"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="field">
-        <label className="label is-large" htmlFor="input-password">
-          Password
-        </label>
-        <input
-          name="password"
-          id="input-password"
-          className="input is-large"
-          type="password"
-          placeholder="Enter an password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <input
-        type="submit"
-        className="button is-primary is-large is-fullwidth"
-        value="Submit"
-      />
-    </form>
-  );
-};
+      return (
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="label" htmlFor="input-username">
+              Username
+            </label>
+            <input
+              name="username"
+              id="input-username"
+              className="input"
+              type="text"
+              placeholder="Enter a username"
+              value={values.username}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.username && touched.username && (
+              <div className="input-feedback">{errors.username}</div>
+            )}
+          </div>
+          <div className="field">
+            <label className="label" htmlFor="input-email">
+              Email
+            </label>
+            <input
+              name="email"
+              id="input-email"
+              className="input"
+              type="email"
+              placeholder="Enter an email address"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.email && touched.email && (
+              <div className="input-feedback">{errors.email}</div>
+            )}
+          </div>
+          <div className="field">
+            <label className="label" htmlFor="input-password">
+              Password
+            </label>
+            <input
+              name="password"
+              id="input-password"
+              className="input"
+              type="password"
+              placeholder="Enter an password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.password && touched.password && (
+              <div className="input-feedback">{errors.password}</div>
+            )}
+          </div>
+          <input
+            type="submit"
+            className="button is-primary"
+            value="Submit"
+            disabled={isSubmetting}
+          />
+        </form>
+      );
+    }}
+  </Formik>
+);
 
 AddUser.propTypes = {
   addUser: PropTypes.func.isRequired,
