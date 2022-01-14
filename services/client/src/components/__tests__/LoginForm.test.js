@@ -5,9 +5,9 @@ import LoginForm from "../LoginForm";
 
 const props = {
   handleLoginFormSubmit: () => {
-    return true
-  }
-}
+    return true;
+  },
+};
 
 afterEach(cleanup);
 

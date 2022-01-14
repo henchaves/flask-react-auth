@@ -22,11 +22,13 @@ const LoginForm = (props) => {
           setSubmitting(false);
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email("Enter a valid email.").required("Email is required."),
+          email: Yup.string()
+            .email("Enter a valid email.")
+            .required("Email is required."),
           password: Yup.string().required("Password is required."),
         })}
       >
-        {props => {
+        {(props) => {
           const {
             values,
             touched,
@@ -34,18 +36,22 @@ const LoginForm = (props) => {
             isSubmitting,
             handleChange,
             handleBlur,
-            handleSubmit
+            handleSubmit,
           } = props;
 
           return (
             <form onSubmit={handleSubmit}>
               <div className="field">
-                <label htmlFor="input-email" className="label">Email</label>
+                <label htmlFor="input-email" className="label">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="input-email"
                   name="email"
-                  className={errors.email && touched.email ? "input error" : "input"}
+                  className={
+                    errors.email && touched.email ? "input error" : "input"
+                  }
                   placeholder="Enter an email address"
                   value={values.email}
                   onChange={handleChange}
@@ -56,12 +62,18 @@ const LoginForm = (props) => {
                 )}
               </div>
               <div className="field">
-                <label htmlFor="input-password" className="label">Password</label>
+                <label htmlFor="input-password" className="label">
+                  Password
+                </label>
                 <input
                   type="password"
                   id="input-password"
                   name="password"
-                  className={errors.password && touched.password ? "input error" : "input"}
+                  className={
+                    errors.password && touched.password
+                      ? "input error"
+                      : "input"
+                  }
                   placeholder="Enter a password"
                   value={values.password}
                   onChange={handleChange}
@@ -82,7 +94,6 @@ const LoginForm = (props) => {
         }}
       </Formik>
     </div>
-
   );
 };
 

@@ -23,12 +23,19 @@ const RegisterForm = (props) => {
           setSubmitting(false);
         }}
         validationSchema={Yup.object().shape({
-          username: Yup.string().required("Username is required.").min(6, "Username must be greater than 5 characters."),
-          email: Yup.string().email("Enter a valid email.").required("Email is required.").min(6, "Email must be greater than 5 characters."),
-          password: Yup.string().required("Password is required.").min(11, "Password must be greater than 10 characters.")
+          username: Yup.string()
+            .required("Username is required.")
+            .min(6, "Username must be greater than 5 characters."),
+          email: Yup.string()
+            .email("Enter a valid email.")
+            .required("Email is required.")
+            .min(6, "Email must be greater than 5 characters."),
+          password: Yup.string()
+            .required("Password is required.")
+            .min(11, "Password must be greater than 10 characters."),
         })}
       >
-        {props => {
+        {(props) => {
           const {
             values,
             touched,
@@ -36,18 +43,24 @@ const RegisterForm = (props) => {
             isSubmitting,
             handleChange,
             handleBlur,
-            handleSubmit
+            handleSubmit,
           } = props;
 
           return (
             <form onSubmit={handleSubmit}>
               <div className="field">
-                <label htmlFor="input-username" className="label">Username</label>
+                <label htmlFor="input-username" className="label">
+                  Username
+                </label>
                 <input
                   type="text"
                   id="input-username"
                   name="username"
-                  className={errors.username && touched.username ? "input error" : "input"}
+                  className={
+                    errors.username && touched.username
+                      ? "input error"
+                      : "input"
+                  }
                   placeholder="Enter a username"
                   value={values.username}
                   onChange={handleChange}
@@ -58,12 +71,16 @@ const RegisterForm = (props) => {
                 )}
               </div>
               <div className="field">
-                <label htmlFor="input-email" className="label">Email</label>
+                <label htmlFor="input-email" className="label">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="input-email"
                   name="email"
-                  className={errors.email && touched.email ? "input error" : "input"}
+                  className={
+                    errors.email && touched.email ? "input error" : "input"
+                  }
                   placeholder="Enter an email address"
                   value={values.email}
                   onChange={handleChange}
@@ -74,12 +91,18 @@ const RegisterForm = (props) => {
                 )}
               </div>
               <div className="field">
-                <label htmlFor="input-password" className="label">Password</label>
+                <label htmlFor="input-password" className="label">
+                  Password
+                </label>
                 <input
                   type="password"
                   id="input-password"
                   name="password"
-                  className={errors.password && touched.password ? "input error" : "input"}
+                  className={
+                    errors.password && touched.password
+                      ? "input error"
+                      : "input"
+                  }
                   placeholder="Enter a password"
                   value={values.password}
                   onChange={handleChange}

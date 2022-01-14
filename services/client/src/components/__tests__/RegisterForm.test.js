@@ -7,9 +7,9 @@ afterEach(cleanup);
 
 const props = {
   handleRegisterFormSubmit: () => {
-    return true
-  }
-}
+    return true;
+  },
+};
 
 it("renders properly", () => {
   const { getByText } = render(<RegisterForm />);
