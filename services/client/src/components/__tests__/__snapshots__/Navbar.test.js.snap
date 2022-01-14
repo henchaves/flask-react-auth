@@ -16,7 +16,6 @@ exports[`renders 1`] = `
         <a
           class="navbar-item nav-title"
           href="/"
-          style="font-weight: bold;"
         >
           Hello, World!
         </a>
@@ -62,12 +61,11 @@ exports[`renders 1`] = `
           >
             Log In
           </a>
-          <a
-            class="navbar-item"
-            href="/logout"
+          <span
+            class="navbar-item link"
           >
             Log Out
-          </a>
+          </span>
         </div>
       </div>
     </section>

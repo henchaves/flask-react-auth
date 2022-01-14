@@ -4,8 +4,12 @@ import { cleanup } from "@testing-library/react";
 import LoginForm from "../LoginForm";
 
 const props = {
-  handleLoginFormSubmit: () => { return true },
-  isAuthenticated: () => { return false },
+  handleLoginFormSubmit: () => {
+    return true;
+  },
+  isAuthenticated: () => {
+    return false;
+  },
 };
 
 afterEach(cleanup);
@@ -16,7 +20,9 @@ it("renders properly", () => {
 });
 
 it("renders with default props", () => {
-  const { getByText, getByLabelText } = renderWithRouter(<LoginForm {...props} />);
+  const { getByText, getByLabelText } = renderWithRouter(
+    <LoginForm {...props} />
+  );
 
   const emailInput = getByLabelText("Email");
   expect(emailInput).toHaveAttribute("type", "email");
