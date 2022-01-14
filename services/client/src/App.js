@@ -48,6 +48,36 @@ const App = () => {
     }
   }
 
+  async function handleRegisterFormSubmit(data) {
+    try {
+      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/register`;
+      await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleLoginFormSubmit(data) {
+    try {
+      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/login`;
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div>
       <Navbar title={title} />
@@ -72,8 +102,14 @@ const App = () => {
                   )}
                 />
                 <Route exact path="/about" component={About} />
-                <Route exact path="/register" component={RegisterForm} />
-                <Route exact path="/login" component={LoginForm} />
+                <Route
+                  exact path="/register"
+                  render={() => (<RegisterForm handleRegisterFormSubmit={handleRegisterFormSubmit} />)}
+                />
+                <Route
+                  exact path="/login"
+                  render={() => (<LoginForm handleLoginFormSubmit={handleLoginFormSubmit} />)}
+                />
               </Switch>
             </div>
           </div>
