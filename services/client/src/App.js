@@ -20,10 +20,15 @@ const App = () => {
   }, []);
 
   function getUsers() {
-    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`
-    axios.get(url)
-      .then(res => { setUsers(res.data) })
-      .catch(err => { console.log(err) })
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`;
+    axios
+      .get(url)
+      .then((res) => {
+        setUsers(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function isAuthenticated() {
@@ -36,42 +41,58 @@ const App = () => {
   function validRefresh() {
     const token = window.localStorage.getItem("refresh_token");
     if (token) {
-      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/refresh`
-      axios.post(url, { refresh_token: token })
-        .then(res => {
+      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/refresh`;
+      axios
+        .post(url, { refresh_token: token })
+        .then((res) => {
           setAccessToken(res.data.access_token);
           getUsers();
           window.localStorage.setItem("refresh_token", res.data.refresh_token);
           return true;
         })
-        .catch(err => { return false });
+        .catch((err) => {
+          return false;
+        });
     }
     return false;
   }
 
   async function addUser(data) {
-    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`
-    axios.post(url, data)
-      .then(res => { getUsers() })
-      .catch(err => { console.error(err) })
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`;
+    axios
+      .post(url, data)
+      .then((res) => {
+        getUsers();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   function handleRegisterFormSubmit(data) {
     const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/register`;
-    axios.post(url, data)
-      .then(res => { console.log(res.data) })
-      .catch(err => { console.log(err) })
+    axios
+      .post(url, data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleLoginFormSubmit(data) {
     const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/login`;
-    axios.post(url, data)
-      .then(res => {
+    axios
+      .post(url, data)
+      .then((res) => {
         setAccessToken(res.data.accessToken);
         getUsers();
         window.localStorage.setItem("refresh_token", res.data.refresh_token);
       })
-      .catch(err => { console.log(err); });
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleLogout() {
@@ -104,20 +125,24 @@ const App = () => {
                 />
                 <Route exact path="/about" component={About} />
                 <Route
-                  exact path="/register"
+                  exact
+                  path="/register"
                   render={() => (
                     <RegisterForm
                       handleRegisterFormSubmit={handleRegisterFormSubmit}
                       isAuthenticated={isAuthenticated}
-                    />)}
+                    />
+                  )}
                 />
                 <Route
-                  exact path="/login"
+                  exact
+                  path="/login"
                   render={() => (
                     <LoginForm
                       handleLoginFormSubmit={handleLoginFormSubmit}
                       isAuthenticated={isAuthenticated}
-                    />)}
+                    />
+                  )}
                 />
               </Switch>
             </div>

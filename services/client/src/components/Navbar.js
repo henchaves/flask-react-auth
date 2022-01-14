@@ -6,10 +6,16 @@ import "./Navbar.css";
 
 const Navbar = (props) => {
   return (
-    <nav className="navbar is-dark" role="navigation" aria-label="main navigation">
+    <nav
+      className="navbar is-dark"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <section className="container">
         <div className="navbar-brand">
-          <Link to="/" className="navbar-item nav-title">{props.title}</Link>
+          <Link to="/" className="navbar-item nav-title">
+            {props.title}
+          </Link>
           <span
             className="nav-toggle navbar-burger"
             onClick={() => {
@@ -26,13 +32,23 @@ const Navbar = (props) => {
         </div>
         <div className="navbar-menu">
           <div className="navbar-start">
-            <Link to="/about" className="navbar-item">About</Link>
-            <Link to="/status" className="navbar-item">User Status</Link>
+            <Link to="/about" className="navbar-item">
+              About
+            </Link>
+            <Link to="/status" className="navbar-item">
+              User Status
+            </Link>
           </div>
           <div className="navbar-end">
-            <Link to="/register" className="navbar-item">Register</Link>
-            <Link to="/login" className="navbar-item">Log In</Link>
-            <span onClick={props.handleLogout} className="navbar-item link">Log Out</span>
+            <Link to="/register" className="navbar-item">
+              Register
+            </Link>
+            <Link to="/login" className="navbar-item">
+              Log In
+            </Link>
+            <span onClick={props.handleLogout} className="navbar-item link">
+              Log Out
+            </span>
           </div>
         </div>
       </section>
