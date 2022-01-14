@@ -8,10 +8,7 @@ import "./form.css";
 
 const RegisterForm = (props) => {
   if (props.isAuthenticated()) {
-    console.log("Authenticated")
     return <Redirect to="/" />;
-  } else {
-    console.log('Not authenticated.')
   }
   return (
     <div>

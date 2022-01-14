@@ -50,18 +50,10 @@ const App = () => {
   }
 
   async function addUser(data) {
-    try {
-      await fetch(`${process.env.REACT_APP_API_SERVICE_URL}/users`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      getUsers();
-    } catch (err) {
-      console.error(err);
-    }
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`
+    axios.post(url, data)
+      .then(res => { getUsers() })
+      .catch(err => { console.error(err) })
   }
 
   function handleRegisterFormSubmit(data) {
@@ -82,9 +74,14 @@ const App = () => {
       .catch(err => { console.log(err); });
   }
 
+  function handleLogout() {
+    window.localStorage.removeItem("refresh_token");
+    setAccessToken("");
+  }
+
   return (
     <div>
-      <Navbar title={title} />
+      <Navbar title={title} handleLogout={handleLogout} />
       <section className="section">
         <div className="container">
           <div className="columns">
