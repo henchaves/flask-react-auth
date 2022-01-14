@@ -1,24 +1,23 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 
 import RegisterForm from "../RegisterForm";
 
 afterEach(cleanup);
 
 const props = {
-  handleRegisterFormSubmit: () => {
-    return true;
-  },
+  handleRegisterFormSubmit: () => { return true },
+  isAuthenticated: () => { return false },
 };
 
 it("renders properly", () => {
-  const { getByText } = render(<RegisterForm />);
+  const { getByText } = renderWithRouter(<RegisterForm {...props} />);
   const header = getByText("Register");
   expect(header).toHaveClass("title");
 });
 
 it("renders with default props", () => {
-  const { getByLabelText, getByText } = render(<RegisterForm {...props} />);
+  const { getByLabelText, getByText } = renderWithRouter(<RegisterForm {...props} />);
 
   const usernameInput = getByLabelText("Username");
   expect(usernameInput).toHaveAttribute("type", "text");
@@ -37,6 +36,6 @@ it("renders with default props", () => {
 });
 
 it("renders", () => {
-  const { asFragment } = render(<RegisterForm />);
+  const { asFragment } = renderWithRouter(<RegisterForm {...props} />);
   expect(asFragment()).toMatchSnapshot();
 });

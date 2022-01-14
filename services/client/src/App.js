@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
+import axios from "axios";
 
 import UsersList from "./components/UsersList";
 import AddUser from "./components/AddUser";
@@ -10,27 +11,42 @@ import RegisterForm from "./components/RegisterForm";
 
 const App = () => {
   const title = "TestDriven.io";
-  const [users, setUsers] = useState([]);
 
-  useEffect(async () => {
-    updateUsersList();
+  const [users, setUsers] = useState([]);
+  const [accessToken, setAccessToken] = useState("");
+
+  useEffect(() => {
+    getUsers();
   }, []);
 
-  async function getUsers() {
-    try {
-      const usersReponse = await fetch(
-        `${process.env.REACT_APP_API_SERVICE_URL}/users`
-      );
-      const usersData = await usersReponse.json();
-      return usersData;
-    } catch (err) {
-      console.error(err);
-    }
+  function getUsers() {
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`
+    axios.get(url)
+      .then(res => { setUsers(res.data) })
+      .catch(err => { console.log(err) })
   }
 
-  async function updateUsersList() {
-    const usersList = await getUsers();
-    setUsers(usersList);
+  function isAuthenticated() {
+    if (accessToken || validRefresh()) {
+      return true;
+    }
+    return false;
+  }
+
+  function validRefresh() {
+    const token = window.localStorage.getItem("refresh_token");
+    if (token) {
+      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/refresh`
+      axios.post(url, { refresh_token: token })
+        .then(res => {
+          setAccessToken(res.data.access_token);
+          getUsers();
+          window.localStorage.setItem("refresh_token", res.data.refresh_token);
+          return true;
+        })
+        .catch(err => { return false });
+    }
+    return false;
   }
 
   async function addUser(data) {
@@ -42,40 +58,28 @@ const App = () => {
           "Content-Type": "application/json",
         },
       });
-      updateUsersList();
+      getUsers();
     } catch (err) {
       console.error(err);
     }
   }
 
-  async function handleRegisterFormSubmit(data) {
-    try {
-      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/register`;
-      await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
+  function handleRegisterFormSubmit(data) {
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/register`;
+    axios.post(url, data)
+      .then(res => { console.log(res.data) })
+      .catch(err => { console.log(err) })
   }
 
-  async function handleLoginFormSubmit(data) {
-    try {
-      const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/login`;
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
+  function handleLoginFormSubmit(data) {
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/login`;
+    axios.post(url, data)
+      .then(res => {
+        setAccessToken(res.data.accessToken);
+        getUsers();
+        window.localStorage.setItem("refresh_token", res.data.refresh_token);
+      })
+      .catch(err => { console.log(err); });
   }
 
   return (
@@ -104,11 +108,19 @@ const App = () => {
                 <Route exact path="/about" component={About} />
                 <Route
                   exact path="/register"
-                  render={() => (<RegisterForm handleRegisterFormSubmit={handleRegisterFormSubmit} />)}
+                  render={() => (
+                    <RegisterForm
+                      handleRegisterFormSubmit={handleRegisterFormSubmit}
+                      isAuthenticated={isAuthenticated}
+                    />)}
                 />
                 <Route
                   exact path="/login"
-                  render={() => (<LoginForm handleLoginFormSubmit={handleLoginFormSubmit} />)}
+                  render={() => (
+                    <LoginForm
+                      handleLoginFormSubmit={handleLoginFormSubmit}
+                      isAuthenticated={isAuthenticated}
+                    />)}
                 />
               </Switch>
             </div>
