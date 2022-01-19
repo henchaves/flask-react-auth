@@ -129,6 +129,8 @@ class Status(Resource):
                 return "Signature expired. Please log in again."
             except jwt.InvalidTokenError:
                 auth_namespace.abort(401, "Invalid token. Please log in again.")
+            except:
+                auth_namespace.abort(401, "Invalid token")
         else:
             auth_namespace.abort(403, "Token required")
 

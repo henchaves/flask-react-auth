@@ -177,3 +177,16 @@ def test_invalid_status(test_app, test_database):
     assert resp.status_code == 401
     assert resp.content_type == "application/json"
     assert "Invalid token. Please log in again." in data["message"]
+
+
+def test_empty_status(test_app, test_database):
+    client = test_app.test_client()
+    resp = client.get(
+        "/auth/status",
+        headers={"Authorization": "Bearer "},
+        content_type="application/json",
+    )
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 401
+    assert resp.content_type == "application/json"
+    assert "Invalid token" in data["message"]
