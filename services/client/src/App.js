@@ -8,6 +8,7 @@ import About from "./components/About";
 import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import UserStatus from "./components/UserStatus";
 
 const App = () => {
   const title = "TestDriven.io";
@@ -124,6 +125,11 @@ const App = () => {
                   )}
                 />
                 <Route exact path="/about" component={About} />
+                <Route
+                  exact
+                  path="/status"
+                  render={() => <UserStatus accessToken={accessToken} />}
+                />
                 <Route
                   exact
                   path="/register"
