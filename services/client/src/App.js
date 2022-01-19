@@ -103,7 +103,11 @@ const App = () => {
 
   return (
     <div>
-      <Navbar title={title} handleLogout={handleLogout} />
+      <Navbar
+        title={title}
+        handleLogout={handleLogout}
+        isAuthenticated={isAuthenticated}
+      />
       <section className="section">
         <div className="container">
           <div className="columns">
@@ -128,11 +132,12 @@ const App = () => {
                 <Route
                   exact
                   path="/status"
-                  render={() =>
+                  render={() => (
                     <UserStatus
                       accessToken={accessToken}
                       isAuthenticated={isAuthenticated}
-                    />}
+                    />
+                  )}
                 />
                 <Route
                   exact
