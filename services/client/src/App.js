@@ -128,7 +128,11 @@ const App = () => {
                 <Route
                   exact
                   path="/status"
-                  render={() => <UserStatus accessToken={accessToken} />}
+                  render={() =>
+                    <UserStatus
+                      accessToken={accessToken}
+                      isAuthenticated={isAuthenticated}
+                    />}
                 />
                 <Route
                   exact

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 
 const UserStatus = (props) => {
+  if (!props.isAuthenticated()) {
+    return <Redirect to="/login" />;
+  }
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
@@ -48,6 +53,7 @@ const UserStatus = (props) => {
 
 UserStatus.propTypes = {
   accessToken: PropTypes.string,
+  isAuthenticated: PropTypes.func.isRequired,
 };
 
 export default UserStatus;
