@@ -4,9 +4,6 @@ import PropTypes from "prop-types";
 import axios from "axios";
 
 const UserStatus = (props) => {
-  if (!props.isAuthenticated()) {
-    return <Redirect to="/login" />;
-  }
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -35,20 +32,24 @@ const UserStatus = (props) => {
       });
   }
 
-  return (
-    <div>
-      <ul>
-        <li>
-          <strong>Email:</strong>&nbsp;
-          <span data-testid="user-email">{email}</span>
-        </li>
-        <li>
-          <strong>Username:</strong>&nbsp;
-          <span data-testid="user-username">{username}</span>
-        </li>
-      </ul>
-    </div>
-  );
+  if (!props.isAuthenticated()) {
+    return <Redirect to="/login" />;
+  } else {
+    return (
+      <div>
+        <ul>
+          <li>
+            <strong>Email:</strong>&nbsp;
+            <span data-testid="user-email">{email}</span>
+          </li>
+          <li>
+            <strong>Username:</strong>&nbsp;
+            <span data-testid="user-username">{username}</span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
 };
 
 UserStatus.propTypes = {
