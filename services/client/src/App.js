@@ -94,12 +94,13 @@ const App = () => {
 
   function removeUser(userId) {
     const url = `${process.env.REACT_APP_API_SERVICE_URL}/users/${userId}`;
-    axios.delete(url)
-      .then(res => {
+    axios
+      .delete(url)
+      .then((res) => {
         getUsers();
         createMessage("success", "User removed");
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         createMessage("danger", "Something went wrong.");
       });
@@ -191,12 +192,14 @@ const App = () => {
                       <h1 className="title is-1">Users</h1>
                       <hr />
                       <br />
-                      <button
-                        className="button is-primary"
-                        onClick={handleOpenModal}
-                      >
-                        Add User
-                      </button>
+                      {isAuthenticated() && (
+                        <button
+                          className="button is-primary"
+                          onClick={handleOpenModal}
+                        >
+                          Add User
+                        </button>
+                      )}
                       <br />
                       <br />
                       <Modal isOpen={showModal} style={modalStyles}>
@@ -217,7 +220,11 @@ const App = () => {
                           </div>
                         </div>
                       </Modal>
-                      <UsersList users={users} removeUser={removeUser} />
+                      <UsersList
+                        users={users}
+                        removeUser={removeUser}
+                        isAuthenticated={isAuthenticated}
+                      />
                     </div>
                   )}
                 />

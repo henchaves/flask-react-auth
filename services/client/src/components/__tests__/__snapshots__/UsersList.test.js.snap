@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders 1`] = `
+exports[`when authenticated renders 1`] = `
 <DocumentFragment>
   <div>
     <table
@@ -59,6 +59,58 @@ exports[`renders 1`] = `
             >
               Delete
             </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`when unauthenticated renders 1`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="table is-hoverable is-fullwidth"
+    >
+      <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Username
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            1
+          </td>
+          <td>
+            hermanmu@gmail.com
+          </td>
+          <td
+            class="username"
+          >
+            michael
+          </td>
+        </tr>
+        <tr>
+          <td>
+            2
+          </td>
+          <td>
+            michael@mherman.org
+          </td>
+          <td
+            class="username"
+          >
+            michaelherman
           </td>
         </tr>
       </tbody>
