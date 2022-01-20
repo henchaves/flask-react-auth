@@ -57,7 +57,7 @@ build:heroku:
         --file ./Dockerfile.deploy
         "."
     - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
-    - docker push $HEROKU_REGISTRY_NAME
+    - docker push $HEROKU_REGISTRY_IMAGE
     - ./release.sh
 
 test:users:
