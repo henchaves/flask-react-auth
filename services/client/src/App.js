@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
+import Modal from "react-modal";
 import axios from "axios";
 
 import UsersList from "./components/UsersList";
@@ -11,13 +12,27 @@ import RegisterForm from "./components/RegisterForm";
 import UserStatus from "./components/UserStatus";
 import Message from "./components/Message";
 
+Modal.setAppElement(document.getElementById("root"));
+
+const modalStyles = {
+  content: {
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    border: 0,
+    background: "transparent",
+  },
+};
+
 const App = () => {
   const title = "TestDriven.io";
 
   const [users, setUsers] = useState([]);
-  const [accessToken, setAccessToken] = useState("");
-  const [messageType, setMessageType] = useState("");
-  const [messageText, setMessageText] = useState("");
+  const [accessToken, setAccessToken] = useState(null);
+  const [messageType, setMessageType] = useState(null);
+  const [messageText, setMessageText] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getUsers();
@@ -61,16 +76,18 @@ const App = () => {
     return false;
   }
 
-  async function addUser(data) {
+  function addUser(data) {
     const url = `${process.env.REACT_APP_API_SERVICE_URL}/users`;
     axios
       .post(url, data)
       .then((res) => {
         getUsers();
+        handleCloseModal();
         createMessage("success", "User added.");
       })
       .catch((err) => {
         console.error(err);
+        handleCloseModal();
         createMessage("danger", "That user already exists.");
       });
   }
@@ -107,7 +124,7 @@ const App = () => {
 
   function handleLogout() {
     window.localStorage.removeItem("refresh_token");
-    setAccessToken("");
+    setAccessToken(null);
     createMessage("success", "You have logged out.");
   }
 
@@ -121,8 +138,16 @@ const App = () => {
   }
 
   function removeMessage() {
-    setMessageType("");
-    setMessageText("");
+    setMessageType(null);
+    setMessageText(null);
+  }
+
+  function handleOpenModal() {
+    setShowModal(true);
+  }
+
+  function handleCloseModal() {
+    setShowModal(false);
   }
 
   return (
@@ -153,8 +178,32 @@ const App = () => {
                       <h1 className="title is-1">Users</h1>
                       <hr />
                       <br />
-                      <AddUser addUser={addUser} />
-                      <br /> <br />
+                      <button
+                        className="button is-primary"
+                        onClick={handleOpenModal}
+                      >
+                        Add User
+                      </button>
+                      <br />
+                      <br />
+                      <Modal isOpen={showModal} style={modalStyles}>
+                        <div className="modal is-active">
+                          <div className="modal-background" />
+                          <div className="modal-card">
+                            <header className="modal-card-head">
+                              <p className="modal-card-title">Add User</p>
+                              <button
+                                className="delete"
+                                aria-label="close"
+                                onClick={handleCloseModal}
+                              />
+                            </header>
+                            <section className="modal-card-body">
+                              <AddUser addUser={addUser} />
+                            </section>
+                          </div>
+                        </div>
+                      </Modal>
                       <UsersList users={users} />
                     </div>
                   )}
