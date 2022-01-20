@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import axios from "axios";
 
 const UserStatus = (props) => {
-
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
