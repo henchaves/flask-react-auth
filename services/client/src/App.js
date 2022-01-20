@@ -9,12 +9,15 @@ import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import UserStatus from "./components/UserStatus";
+import Message from "./components/Message";
 
 const App = () => {
   const title = "TestDriven.io";
 
   const [users, setUsers] = useState([]);
   const [accessToken, setAccessToken] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [messageText, setMessageText] = useState("");
 
   useEffect(() => {
     getUsers();
@@ -64,9 +67,11 @@ const App = () => {
       .post(url, data)
       .then((res) => {
         getUsers();
+        createMessage("success", "User added.");
       })
       .catch((err) => {
         console.error(err);
+        createMessage("danger", "That user already exists.");
       });
   }
 
@@ -76,9 +81,11 @@ const App = () => {
       .post(url, data)
       .then((res) => {
         console.log(res.data);
+        createMessage("success", "You have registered successfully.");
       })
       .catch((err) => {
         console.log(err);
+        createMessage("danger", "That user already exists.");
       });
   }
 
@@ -90,15 +97,32 @@ const App = () => {
         setAccessToken(res.data.accessToken);
         getUsers();
         window.localStorage.setItem("refresh_token", res.data.refresh_token);
+        createMessage("success", "You have logged in successfully.");
       })
       .catch((err) => {
         console.log(err);
+        createMessage("danger", "Incorrect email and/or password.");
       });
   }
 
   function handleLogout() {
     window.localStorage.removeItem("refresh_token");
     setAccessToken("");
+    createMessage("success", "You have logged out.");
+  }
+
+  function createMessage(type, text) {
+    setMessageType(type);
+    setMessageText(text);
+
+    setTimeout(() => {
+      removeMessage();
+    }, 3000);
+  }
+
+  function removeMessage() {
+    setMessageType("");
+    setMessageText("");
   }
 
   return (
@@ -110,6 +134,13 @@ const App = () => {
       />
       <section className="section">
         <div className="container">
+          {messageType && messageText && (
+            <Message
+              messageType={messageType}
+              messageText={messageText}
+              removeMessage={removeMessage}
+            />
+          )}
           <div className="columns">
             <div className="column is-half">
               <br />
