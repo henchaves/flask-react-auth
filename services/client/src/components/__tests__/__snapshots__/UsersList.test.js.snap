@@ -9,6 +9,9 @@ exports[`renders 1`] = `
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             Email
           </th>
           <th>
@@ -19,9 +22,10 @@ exports[`renders 1`] = `
       </thead>
       <tbody>
         <tr>
-          <td
-            class="email"
-          >
+          <td>
+            1
+          </td>
+          <td>
             hermanmu@gmail.com
           </td>
           <td
@@ -38,9 +42,10 @@ exports[`renders 1`] = `
           </td>
         </tr>
         <tr>
-          <td
-            class="email"
-          >
+          <td>
+            2
+          </td>
+          <td>
             michael@mherman.org
           </td>
           <td

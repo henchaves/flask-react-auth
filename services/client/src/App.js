@@ -92,6 +92,19 @@ const App = () => {
       });
   }
 
+  function removeUser(userId) {
+    const url = `${process.env.REACT_APP_API_SERVICE_URL}/users/${userId}`;
+    axios.delete(url)
+      .then(res => {
+        getUsers();
+        createMessage("success", "User removed");
+      })
+      .catch(err => {
+        console.error(err);
+        createMessage("danger", "Something went wrong.");
+      });
+  }
+
   function handleRegisterFormSubmit(data) {
     const url = `${process.env.REACT_APP_API_SERVICE_URL}/auth/register`;
     axios
@@ -204,7 +217,7 @@ const App = () => {
                           </div>
                         </div>
                       </Modal>
-                      <UsersList users={users} />
+                      <UsersList users={users} removeUser={removeUser} />
                     </div>
                   )}
                 />
